@@ -14,8 +14,10 @@ class DirStruct
     {
         $html = null;
         $pull_down = $margin = '';
-         //make sure we have a trailing slash
-        $path = rtrim($path, '/') . '/';
+        if ($path) {
+			 //make sure we have a trailing slash
+			$path = rtrim($path, '/') . '/';
+		}
         if (is_dir($path)) {
             
             $contents = self::sortFiles($path);

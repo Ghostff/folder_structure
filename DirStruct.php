@@ -2,15 +2,15 @@
 
 class DirStruct
 {
-    //sorthing arrays (folder then files)
-    private function sortFiles($path)
+    //sort's arrays (folder then files)
+    private static function sortFiles($path)
     {
         $directory = glob($path . '*', GLOB_ONLYDIR);
         $contents = glob($path . '*');
         return array_unique(array_merge($directory, $contents));
     }
     
-    public function structure($path, $is_loop = false)
+    public static function structure($path, $is_loop = false)
     {
         $html = null;
         $pull_down = $margin = '';
@@ -18,7 +18,7 @@ class DirStruct
         $path = rtrim($path, '/') . '/';
         if (is_dir($path)) {
             
-            $contents = $this->sortFiles($path);
+            $contents = self::sortFiles($path);
             $directory = trim($path, '/');
             
             if ($is_loop) {
@@ -34,7 +34,6 @@ class DirStruct
                 $html .= '</div>';
             }
             
-			//FOD (file or directory)
             foreach ($contents as $files => $FOD) {
                 
                 if (is_dir($FOD)) {
@@ -45,7 +44,8 @@ class DirStruct
                     $html .= '<span>&#x02500; </span><span> &#128194;</span>';
                     $html .= '<span style="font-size:11px;"> ' . $FOD . '</span><br />';
                     $html .= '</div>';
-                    $html .= $this->structure($path . $FOD, true);
+					//get structure of current directory
+                    $html .= self::structure($path . $FOD, true);
                     $html .= '</div>';
                 }
                 else {
@@ -56,8 +56,7 @@ class DirStruct
                         $html .= '<span>&#x02500; </span><span> 🃏 </span>';
                         $html .= '<span style="font-size:11px;"> ' . $FOD . '</span><br />';
                         $html .= '</div>';
-                    }
-                    else {
+                    } else {
                         $html .= '<div style="border-left:1px solid #000;">';
                         $html .= '<span>&#x02500; </span><span> 🃏 </span>';
                         $html .= '<span style="font-size:11px;"> ' . $FOD . '</span><br />';
@@ -68,7 +67,7 @@ class DirStruct
             return $html;
         }
         else {
-            throw new Exception($path . 'iS not A Directory');
+            throw new Exception($path . ' is not a directory');
         }
     }
 }

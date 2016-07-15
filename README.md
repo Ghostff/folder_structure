@@ -4,7 +4,6 @@ List out directory contents
 
 require 'DirStruct.php';
 
-$directory = new DirStruct;
-echo $directory->structure('Folder');
+echo DirStruct::structure('Folder');
 
 ```

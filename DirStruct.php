@@ -9,37 +9,36 @@ class DirStruct
         $contents = glob($path . '*');
         return array_unique(array_merge($directory, $contents));
     }
-    
+
     public static function structure($path, $is_loop = false)
     {
         $html = null;
         $pull_down = $margin = '';
         if ($path) {
-			 //make sure we have a trailing slash
-			$path = rtrim($path, '/') . '/';
-		}
+    			 //make sure we have a trailing slash
+    			$path = rtrim($path, '/') . '/';
+    		}
         if (is_dir($path)) {
-            
+
             $contents = self::sortFiles($path);
             $directory = trim($path, '/');
-            
-            if ($is_loop) {
-                $margin = 29;
-                $pull_down = 'padding-top:5px;margin-top:-5px;';
-            }
-            
+
             if (!$is_loop) {
+              $directory = basename(trim($path, '/'));
                 $html .= '<div style="padding-left:35px;">';
                 $html .= '<div style="margin-left:-25px;margin-top:5px;">';
                 $html .= '<span>&#x0229F;</span><span> &#128194;</span>';
                 $html .= '<span style="font-size:11px;"> ' . $directory . '</span><br />';
                 $html .= '</div>';
+            } else {
+              $margin = 29;
+              $pull_down = 'padding-top:5px;margin-top:-5px;';
             }
-            
+
             foreach ($contents as $files => $FOD) {
-                
+
                 if (is_dir($FOD)) {
-                    $FOD = str_replace($path, '', $FOD);    
+                    $FOD = str_replace($path, '', $FOD);
                     $html .= '<div style="margin-left:' . $margin . 'px;' . $pull_down .'';
                     $html .= 'border-left:1px dotted #000;">';
                     $html .= '<div style="margin-left:-7px;"><span>&#x0229F;</span>';

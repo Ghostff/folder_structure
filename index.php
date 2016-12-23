@@ -1,6 +1,8 @@
 <?php
 
-require 'DirStruct.php';
-echo DirStruct::structure('Folder');
+require 'src/Dir.php';
+Dir::setColor('green', 'green');
+echo Dir::structure('Folder');
 
-?>
+
+

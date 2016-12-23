@@ -9,4 +9,4 @@ Dir::setColor('green', 'green');
 echo Dir::structure('Folder');
 
 ```
-![alt tag](https://github.com/Ghostff/folder_structure/blob/master/SS.png)
+![alt tag](https://github.com/Ghostff/folder_structure/blob/master/SS.PNG)

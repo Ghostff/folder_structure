@@ -2,8 +2,10 @@
 List out directory contents
 ```php
 
-require 'DirStruct.php';
+require 'src/Dir.php';
 
-echo DirStruct::structure('Folder');
+Dir::setColor('green', 'green');
+
+echo Dir::structure('Folder');
 
 ```

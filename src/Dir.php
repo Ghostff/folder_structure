@@ -32,6 +32,39 @@ class Dir
      **/
     private static $highlighted = array();
 
+    /**
+     * holds class name
+     **/
+    private static $class = 'phpfs';
+
+    /**
+     * holds image path
+     **/
+    private static $path = 'src/Assets/';
+
+
+    /**
+     * updates class name
+     *
+     * @param $class_name
+     * @return void
+     */
+    public static function setClass($class_name)
+    {
+        self::$class = $class_name;
+    }
+
+    /**
+     * updates image path
+     *
+     * @param $path_to_image
+     * @return void
+     */
+    public static function setPath($path_to_image)
+    {
+        self::$path = $path_to_image;
+    }
+
 
     /**
      * Dumps a css style(prevents duplicate of style)
@@ -43,15 +76,15 @@ class Dir
         if ( ! static::$styled)
         {
             static::$styled = true;
-            return '
-            <style>
-                img {height: 2%;margin-right: 5px;}
-                div{border-left: 1px dotted #000;position: relative;top: -4px;padding-left: 10px;padding-top: 10px;font-size: 12px;}
-                div:before{content: \'\';height: 500px;width: 11px;position: absolute;margin-top: 8px;margin-left: -11px;border-top: 1px dotted #000;}
-                div:last-child:before{background: #fff;}
-                .clsd, .clsd:before{border: none;background: transparent;}
+            $style = '<style>
+                .%1$s-img {height: 2%;margin-right: 5px;}
+                .%1$s-div{border-left: 1px dotted #000;position: relative;top: -4px;padding-left: 9px;padding-top: 10px;font-size: 12px;}
+                .%1$s-div:before{content: \'\';height: 500px;width: 11px;position: absolute;margin-top: 8px;margin-left: -11px;border-top: 1px dotted #000;}
+                .%1$s-div:last-child:before{background: #fff;}
+                .%1$s-div.clsd, .%1$s-div.clsd:before{border: none;background: transparent;}
             </style>
             ';
+            return str_replace('%1$s', self::$class, $style);
         }
         return '';
     }
@@ -104,7 +137,7 @@ class Dir
             $class = '';
             if ( ! self::$classed)
             {
-                $class = ' class="clsd"';
+                $class = ' clsd';
                 self::$classed = true;
             }
 
@@ -119,15 +152,15 @@ class Dir
             {
                 $color = ( ! is_null($color)) ? $color : self::$dir;
                 $styled = sprintf($styled, $color);
+                $format = '<div class="%1$s-div%3$s" style="margin-left:%2$spx;"><img class="%1$s-img" src="%7$sD_%4$s.png"><span class="%1$s-span" %5$s>%6$s</span>';
+
                 if (count(static::globed($path . $DS . $dirs)) < 1)
                 {
-                    $format = '<div style="margin-left:%spx;"%s><img src="src/Assets/D_%sE.png"> <span%s>%s</span>';
-                    self::$buff .= sprintf($format, $margin, $class, self::$dir, $styled, $dirs);
+                    self::$buff .= sprintf($format, self::$class, $margin, $class, self::$dir . 'E', $styled, $dirs, self::$path);
                 }
                 else
                 {
-                    $format = '<div style="margin-left:%spx;"%s><img src="src/Assets/D_%s.png"> <span%s>%s</span>';
-                    self::$buff .= sprintf($format, $margin, $class, self::$dir, $styled, $dirs);
+                    self::$buff .= sprintf($format, self::$class, $margin, $class, self::$dir, $styled, $dirs, self::$path);
                     self::evaluate($path . $DS . $dirs, 10);
                 }
                 self::$buff .= '</div>';
@@ -136,8 +169,8 @@ class Dir
             {
                 $color = ( ! is_null($color)) ? $color : self::$file;
                 $styled = sprintf($styled, $color);
-                $format = '<div style="margin-left:%spx;"%s><img src="src/Assets/F_%s.png"> <span%s>%s</span></div>';
-                self::$buff .= sprintf($format, $margin, $class, self::$file, $styled, $dirs);
+                $format = '<div class="%1$s-div%3$s" style="margin-left:%2$spx;"><img class="%1$s-img" src="%7$sF_%4$s.png"><span class="%1$s-span" %5$s>%6$s</span></div>';
+                self::$buff .= sprintf($format, self::$class, $margin, $class, self::$file, $styled, $dirs, self::$path);
             }
 
         }
